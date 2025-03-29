@@ -1,0 +1,6 @@
+@BookReviewDotNet_HostAddress = http://localhost:5122
+
+GET {{BookReviewDotNet_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
