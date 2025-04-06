@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "QL8xJjKWEGoScgrhb37zvWJ7ozcAcJpc5gqZjC5OLts=",
+  "Source": "BookReviewDotNet",
+  "BasePath": "_content/BookReviewDotNet",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

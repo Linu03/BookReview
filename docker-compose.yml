@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword  # parola root a MySQL
+      MYSQL_DATABASE: book_review_db    # baza de date care va fi creată
+      MYSQL_USER: user                  # utilizatorul pentru conectare
+      MYSQL_PASSWORD: userpassword      # parola utilizatorului
+    ports:
+      - "3306:3306"  # expune portul 3306 pentru a putea accesa MySQL de pe host
+    volumes:
+      - mysql-data:/var/lib/mysql  # persistă datele MySQL pe disc
+
+volumes:
+  mysql-data:
+    driver: local
