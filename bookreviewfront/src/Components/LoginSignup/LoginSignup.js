@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import './LoginSignup.css';
+import { useNavigate } from 'react-router-dom';
 
 import user_icon from '../Assets/person.png';
 import email_icon from '../Assets/email.png';
 import password_icon from '../Assets/password.png';
 
+
 const LoginSignup = () => {
     const [action, setAction] = useState("Login");
-
+    
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate(); // initializare navigate
+    console.log("Navigate function:", navigate); // Verifică dacă navigate este o funcție validă
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -22,6 +27,7 @@ const LoginSignup = () => {
 
     // trimitere date in backend
     const handleSubmit = async () => {
+        console.log("Submit button clicked");
         const url = action === "Login"
             ? 'http://localhost:5122/api/auth/login'
             : 'http://localhost:5122/api/auth/register';
@@ -42,13 +48,26 @@ const LoginSignup = () => {
 
             const result = await response.json();
             console.log('Server response:', result);
-
             
+            if (response.ok) {
+                if (action === "Login" && result.Token) {
+                    localStorage.setItem('authToken', result.Token);
+                    console.log("Token saved:", result.Token);
+                    console.log("Navigating to /home");
+                    navigate('/home'); 
+                }
+                setTimeout(() => {
+                    console.log("Attempting navigation after delay");
+                    navigate('/home');
+                }, 100);
+            }
+
             setName("");  
             setEmail(""); 
             setPassword(""); 
         } catch (error) {
             console.error('Error sending request:', error);
+            // window.location.href = '/home';
         }
     };
 

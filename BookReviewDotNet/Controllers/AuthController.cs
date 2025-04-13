@@ -3,6 +3,11 @@ using BookReviewDotNet.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BCrypt.Net;
+using System.Text;  
+using Microsoft.Extensions.Configuration;  
+using Microsoft.IdentityModel.Tokens;  
+using System.IdentityModel.Tokens.Jwt;  
+using System.Security.Claims;  
 
 namespace BookReviewDotNet.Controllers
 {
@@ -11,10 +16,12 @@ namespace BookReviewDotNet.Controllers
     public class AuthController : ControllerBase
     {   
         private readonly AppDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(AppDbContext context)
+        public AuthController(AppDbContext context, IConfiguration configuration)
         {
-            _context = context;
+        _context = context;
+        _configuration = configuration;
         }
 
         // POST: api/auth/register
@@ -81,7 +88,8 @@ namespace BookReviewDotNet.Controllers
             // Verificare în baza de date
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginModel.Email);
             if (user == null)
-            {
+            {   
+                Console.WriteLine("Login failed: Email not found in database.");
                 return BadRequest("Invalid email or password.");
             }
 
@@ -98,6 +106,35 @@ namespace BookReviewDotNet.Controllers
 
             // dates match?
             Console.WriteLine("Login corect: Datele din front-end sunt aceleași cu datele din baza de date.");
+            
+            if (string.IsNullOrEmpty(_configuration["Jwt:SecretKey"]))
+            {
+            return BadRequest("SecretKey is missing in configuration.");
+            }
+
+            var secretKey = Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]);
+            var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+            new Claim(ClaimTypes.Name, user.Name),
+            new Claim(ClaimTypes.Email, user.Email),
+            // putem adauga mai multe
+            };
+
+            var token = new JwtSecurityToken(
+            issuer: _configuration["Jwt:Issuer"],
+            audience: _configuration["Jwt:Audience"],
+            claims: claims,
+            expires: DateTime.Now.AddHours(1), // 1 ora
+            signingCredentials: signingCredentials
+            );
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            // returnează token-ul JWT
+            return Ok(new { Token = tokenString });
+
 
             return Ok(new { message = "User logged in successfully" });
         }

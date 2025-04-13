@@ -3,8 +3,34 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using BookReviewDotNet.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// 1. Configurarea secretKey din appsettings.json
+var secretKey = builder.Configuration["Jwt:SecretKey"];
+if (string.IsNullOrEmpty(secretKey))
+{
+    throw new Exception("SecretKey is not configured.");
+}
+var key = Encoding.UTF8.GetBytes(secretKey);
+
+// Adaugă serviciile pentru JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]))
+        };
+    });
 
 // DbContext service for MySQL
 builder.Services.AddDbContext<AppDbContext>(options =>

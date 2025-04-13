@@ -112,3 +112,13 @@ C:\Users\Linu\Desktop\PDAW\BookReviewDotNet\bin\Debug\net8.0\Microsoft.Extension
 C:\Users\Linu\Desktop\PDAW\BookReviewDotNet\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\Linu\Desktop\PDAW\BookReviewDotNet\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 C:\Users\Linu\Desktop\PDAW\BookReviewDotNet\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\Linu\Desktop\PDAW\BookReviewDotNet\obj\Debug\net8.0\BookReviewDotNet.sourcelink.json
+C:\Users\Linu\Desktop\PDAW\BookReviewDotNet\bin\Debug\net8.0\Microsoft.Bcl.Memory.dll
+C:\Users\Linu\Desktop\PDAW\BookReviewDotNet\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Linu\Desktop\PDAW\BookReviewDotNet\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Linu\Desktop\PDAW\BookReviewDotNet\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Linu\Desktop\PDAW\BookReviewDotNet\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Linu\Desktop\PDAW\BookReviewDotNet\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Linu\Desktop\PDAW\BookReviewDotNet\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Linu\Desktop\PDAW\BookReviewDotNet\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Linu\Desktop\PDAW\BookReviewDotNet\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
