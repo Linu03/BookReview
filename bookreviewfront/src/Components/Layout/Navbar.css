@@ -1,0 +1,84 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  background-color: #0b1b2d; 
+  padding: 15px 30px;
+  display: flex;
+  justify-content: center;
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%; 
+  z-index: 1000; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.navdiv {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Stilizarea logo-ului */
+.logo a {
+  color: white;
+  font-size: 35px;
+  font-weight: bolder;
+  text-decoration: none;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  margin-left: 30px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  transition: all 0.3s ease; 
+  display: inline-block; 
+  padding: 5px 10px; 
+  border-radius: 4px; 
+}
+
+.nav-links li a:hover {
+  color: #ffcc00; 
+  transform: scale(1.1); 
+  background-color: rgba(255, 255, 255, 0.1); 
+}
+
+.search-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-filter input,
+.search-filter select {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: none;
+  font-size: 14px;
+}
+
+.search-filter input:focus,
+.search-filter select:focus {
+  outline: none;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+body {
+  padding-top: 70px; 
+}
