@@ -3,7 +3,6 @@ import Navbar from '../Layout/Navbar';
 
 const Home = () => {
   useEffect(() => {
-    console.log("Home component mounted");
     const token = localStorage.getItem('authToken');  
     console.log("Token in Home:", token);
     
