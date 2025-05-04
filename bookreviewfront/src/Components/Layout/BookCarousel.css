@@ -1,0 +1,99 @@
+.carousel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    cursor: pointer;
+    padding: 3rem;
+    perspective: 1000px;
+    flex-wrap: wrap;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.book {
+    transition: all 0.5s ease;
+    transform-style: preserve-3d;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.book img {
+    border-radius: 12px;
+    transition: all 0.5s ease;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
+}
+
+.book.small {
+    transform: scale(0.8) translateZ(-100px);
+    opacity: 0.7;
+}
+
+.book.small img {
+    width: 200px;
+    height: 300px;
+}
+
+.book.large {
+    transform: scale(1.1) translateZ(0);
+    opacity: 1;
+}
+
+.book.large img {
+    width: 280px;
+    height: 420px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+}
+
+.book-title {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-weight: bold;
+    font-size: 1.4rem;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+    max-width: 280px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Hover effects */
+.book:hover {
+    transform: scale(1.05);
+}
+
+.book:hover img {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+}
+
+.book:hover .book-title {
+    color: #64b5f6;
+    transform: translateY(-5px);
+}
+
+/* Animation for book rotation */
+@keyframes rotateIn {
+    from {
+        opacity: 0;
+        transform: rotateY(-90deg) translateZ(100px);
+    }
+    to {
+        opacity: 1;
+        transform: rotateY(0) translateZ(0);
+    }
+}
+
+.book {
+    animation: rotateIn 0.8s ease-out forwards;
+}
+
+.book:nth-child(2) { animation-delay: 0.1s; }
+.book:nth-child(3) { animation-delay: 0.2s; }
+.book:nth-child(4) { animation-delay: 0.3s; }
+.book:nth-child(5) { animation-delay: 0.4s; }
+.book:nth-child(6) { animation-delay: 0.5s; }
+  

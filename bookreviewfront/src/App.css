@@ -3,7 +3,6 @@
   font-family: Arial, sans-serif;
 }
 
-/* Acestea sunt stiluri standard care nu afectează componentele */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -24,7 +23,6 @@
   color: #61dafb;
 }
 
-/* Dacă ai un logo în App.js sau altceva, poți să folosești acest selector */
 .App-logo {
   height: 40vmin;
   pointer-events: none;

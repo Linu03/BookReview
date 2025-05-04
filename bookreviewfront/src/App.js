@@ -1,4 +1,3 @@
-// App.js
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
@@ -9,7 +8,6 @@ import { AuthProvider } from './Components/Context/AuthContext';
 import AcceptBook from './Components/AcceptBooks/AcceptBooks';
 
 
-// import logo from './Components/assets/IconSite.png';
 
 function App() {
   return (

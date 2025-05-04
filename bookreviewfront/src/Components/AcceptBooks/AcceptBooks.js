@@ -10,8 +10,6 @@ const AcceptBook = () => {
     return (
         <>
             <Navbar />
-        
-        
         </>
     );
 
