@@ -1,11 +1,27 @@
 import React, { useState } from 'react';
 import './LoginSignup.css';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Context/AuthContext';
 
 import user_icon from '../Assets/person.png';
 import email_icon from '../Assets/email.png';
 import password_icon from '../Assets/password.png';
 
+// Function to decode JWT token
+const decodeJwtToken = (token) => {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        console.error('Error decoding token:', e);
+        return null;
+    }
+};
 
 const LoginSignup = () => {
     const [action, setAction] = useState("Login");
@@ -16,6 +32,7 @@ const LoginSignup = () => {
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate(); // initializare navigate
+    const { login, isAdmin } = useAuth();
     console.log("Navigate function:", navigate); // Verifică dacă navigate este o funcție validă
 
     const handleChange = (e) => {
@@ -47,27 +64,34 @@ const LoginSignup = () => {
             });
 
             const result = await response.json();
-            console.log('Server response:', result);
-            
+            console.log('Full server response:', JSON.stringify(result, null, 2));
+
             if (response.ok) {
-                if (action === "Login" && result.Token) {
-                    localStorage.setItem('authToken', result.Token);
-                    console.log("Token saved:", result.Token);
-                    console.log("Navigating to /home");
-                    navigate('/home'); 
-                }
-                setTimeout(() => {
-                    console.log("Attempting navigation after delay");
-                    navigate('/home');
-                }, 100);
+                // Decode the token to get user information
+                const decodedToken = decodeJwtToken(result.token);
+                console.log('Decoded token:', decodedToken);
+
+                // Create user object with all information
+                const userData = {
+                    token: result.token,
+                    id: decodedToken?.id,
+                    name: decodedToken?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
+                    email: decodedToken?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
+                    role: decodedToken?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+                };
+
+                console.log('User data:', userData);
+                login(userData);
+                navigate('/home');
+            } else {
+                console.error('Login/Signup failed:', result.message);
             }
 
-            setName("");  
-            setEmail(""); 
-            setPassword(""); 
+            setName("");
+            setEmail("");
+            setPassword("");
         } catch (error) {
-            console.error('Error sending request:', error);
-            // window.location.href = '/home';
+            console.error('Error:', error);
         }
     };
 
@@ -137,6 +161,10 @@ const LoginSignup = () => {
             <button className="submit-button" onClick={handleSubmit}>
                 {action}
             </button>
+
+            {isAdmin() && (
+                <div>This is only visible to admins</div>
+            )}
         </div>
     );
 };

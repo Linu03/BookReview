@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';  // Importă Link din react-router-dom
+import { useAuth } from '../Context/AuthContext';
 import './Navbar.css';
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('');
+  const { isAdmin } = useAuth();
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -27,6 +29,9 @@ const Navbar = () => {
           <li><Link to="/home">Home</Link></li>  
           <li><Link to="/contact">Contact</Link></li>  
           <li><Link to="/addBook">Adaugă o idee de carte</Link></li>
+          {isAdmin() && (
+            <li><Link to="/acceptBook">Acceptă cărți</Link></li>
+          )}
         </ul>
 
         {/* Căutare și filtrare */}

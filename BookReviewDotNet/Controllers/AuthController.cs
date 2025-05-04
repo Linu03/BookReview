@@ -57,7 +57,8 @@ namespace BookReviewDotNet.Controllers
             {
                 Name = userModel.Name,
                 Email = userModel.Email,
-                Password = hashedPassword
+                Password = hashedPassword,
+                Role = "user"
             };
 
             // Add new user in DB
@@ -119,6 +120,7 @@ namespace BookReviewDotNet.Controllers
             {
             new Claim(ClaimTypes.Name, user.Name),
             new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Role, user.Role)
             // putem adauga mai multe
             };
 
@@ -135,8 +137,6 @@ namespace BookReviewDotNet.Controllers
             // returnează token-ul JWT
             return Ok(new { Token = tokenString });
 
-
-            return Ok(new { message = "User logged in successfully" });
         }
     }
 }
