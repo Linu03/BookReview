@@ -47,7 +47,7 @@ namespace BookReviewDotNet.Controllers
             {
                 return BadRequest("User with this email already exists.");
             }
-
+    
             // Password encryption
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(userModel.Password);
             Console.WriteLine($"Password encrypted: {hashedPassword}");

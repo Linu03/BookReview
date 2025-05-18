@@ -31,9 +31,9 @@ const LoginSignup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const navigate = useNavigate(); // initializare navigate
+    const navigate = useNavigate(); 
     const { login, isAdmin } = useAuth();
-    console.log("Navigate function:", navigate); // Verifică dacă navigate este o funcție validă
+    console.log("Navigate function:", navigate); 
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -55,9 +55,11 @@ const LoginSignup = () => {
         }
 
         try {
-            const response = await fetch(url, {
+            const response = await fetch(url, 
+            {
                 method: 'POST',
-                headers: {
+                headers: 
+                {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data),
@@ -67,11 +69,9 @@ const LoginSignup = () => {
             console.log('Full server response:', JSON.stringify(result, null, 2));
 
             if (response.ok) {
-                // Decode the token to get user information
                 const decodedToken = decodeJwtToken(result.token);
                 console.log('Decoded token:', decodedToken);
 
-                // Create user object with all information
                 const userData = {
                     token: result.token,
                     id: decodedToken?.id,

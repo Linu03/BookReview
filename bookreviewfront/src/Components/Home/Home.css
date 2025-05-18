@@ -1,115 +1,112 @@
- /* body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  .navbar {
-    background-color: #0b1b2d;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .navdiv {
-    width: 100%;
-    max-width: 1200px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .logo a {
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    text-decoration: none;
-  }
-  
-  .nav-links {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .nav-links li {
-    margin-left: 20px;
-  }
-  
-  .nav-links li a {
-    text-decoration: none;
-    color: white;
-    font-size: 16px;
-    transition: color 0.3s ease;
-  }
-  
-  .nav-links li a:hover {
-    color: #d1e8ff;
-  }
-  
-  .search-filter {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .search-filter input,
-  .search-filter select {
-    padding: 6px 10px;
-    border-radius: 5px;
-    border: none;
-    font-size: 14px;
-  }
-  
-  .search-filter input:focus,
-  .search-filter select:focus {
-    outline: none;
-    box-shadow: 0 0 3px rgba(0,0,0,0.3);
-  }
-   */
-
-   .carousel-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 70px);
-    padding-top: 1rem;
-    background: transparent;
-    position: relative;
-    overflow: hidden;
-    animation: fadeIn 1s ease-in;
+/* Fundal gradient animat */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(-45deg, #2e0b4e, #3d00b4, #1a237e, #0b1b2d);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+  padding-top: 70px;
+  color: white;
 }
 
-.carousel-wrapper::before {
-    display: none;
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hero-text {
+  text-align: center;
+  margin-top: 120px; /* Mai mult spațiu ca să nu atingă navbarul */
+  animation: fadeInText 2s ease-in-out;
+}
+
+.hero-text h1 {
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.hero-text p {
+  font-size: 1.3rem;
+  color: #d1e8ff;
+}
+
+@keyframes fadeInText {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Carousel */
+.carousel-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding-top: 1rem;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 1s ease-in;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .carousel-container {
-    position: relative;
-    z-index: 1;
-    animation: float 6s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+  animation: float 6s ease-in-out infinite;
 }
 
 @keyframes float {
-    0% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-20px);
-    }
-    100% {
-        transform: translateY(0px);
-    }
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
 }
-  
+
+/* Buton CTA */
+.see-more-btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.see-more-btn button {
+  background-color: #ffcc00;
+  color: #0b1b2d;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.see-more-btn button:hover {
+  background-color: #e6b800;
+}
+
+/* Testimonial */
+.testimonials {
+  text-align: center;
+  margin-top: 60px;
+  font-style: italic;
+  font-size: 1rem;
+  color: #d1e8ff;
+}
