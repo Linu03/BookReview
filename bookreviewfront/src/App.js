@@ -8,6 +8,7 @@ import { AuthProvider } from './Components/Context/AuthContext';
 import AcceptBook from './Components/AcceptBooks/AcceptBooks';
 import AllBooks from './Components/AllBooks/AllBooks';
 import Navbar from './Components/Layout/Navbar';
+import ProtectedRoute from './Components/Layout/ProtectedRoute';
 
 function App() {
   return (
@@ -29,11 +30,11 @@ function AppContent() {
       <Routes>
         {/* <img src={logo} className="App-logo" alt="Booksy logo" /> */}
         <Route path="/" element={<LoginSignup />} />
-        <Route path="/home" element={<Home />} />
-        <Route path='/contact' element={<Contact/>}/>
-        <Route path="/addBook" element={<AddBook />} /> 
-        <Route path='/acceptBook' element={<AcceptBook />} />
-        <Route path='/books' element={<AllBooks />} />
+        <Route path="/home" element={<ProtectedRoute element={Home} />} />
+        <Route path='/contact' element={<ProtectedRoute element={Contact}/>}/>
+        <Route path="/addBook" element={<ProtectedRoute element={AddBook} />} /> 
+        <Route path='/acceptBook' element={<ProtectedRoute element={AcceptBook} />} />
+        <Route path='/books' element={<ProtectedRoute element={AllBooks} />} />
       </Routes>
     </>
   );
