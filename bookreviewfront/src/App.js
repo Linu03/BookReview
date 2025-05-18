@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import Home from './Components/Home/Home';
 import Contact from './Components/Contact/Contact'
@@ -13,18 +13,30 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Navbar />
-        <Routes>
-          {/* <img src={logo} className="App-logo" alt="Booksy logo" /> */}
-          <Route path="/" element={<LoginSignup />} />
-          <Route path="/home" element={<Home />} />
-          <Route path='/contact' element={<Contact/>}/>
-          <Route path="/addBook" element={<AddBook />} /> 
-          <Route path='/acceptBook' element={<AcceptBook />} />
-          <Route path='/books' element={<AllBooks />} />
-        </Routes>
+        <AppContent />
       </BrowserRouter>
     </AuthProvider>
   );
 }
+
+function AppContent() {
+  const location = useLocation();
+  const showNavbar = location.pathname !== '/';
+
+  return (
+    <>
+      {showNavbar && <Navbar />}
+      <Routes>
+        {/* <img src={logo} className="App-logo" alt="Booksy logo" /> */}
+        <Route path="/" element={<LoginSignup />} />
+        <Route path="/home" element={<Home />} />
+        <Route path='/contact' element={<Contact/>}/>
+        <Route path="/addBook" element={<AddBook />} /> 
+        <Route path='/acceptBook' element={<AcceptBook />} />
+        <Route path='/books' element={<AllBooks />} />
+      </Routes>
+    </>
+  );
+}
+
 export default App;

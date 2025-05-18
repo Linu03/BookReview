@@ -9,9 +9,9 @@ namespace BookReviewDotNet.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
 
-        public BooksController(ApplicationDbContext context)
+        public BooksController(AppDbContext context)
         {
             _context = context;
         }
@@ -21,8 +21,16 @@ namespace BookReviewDotNet.Controllers
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
             return await _context.Books
-                .Include(b => b.BookGenres)
-                    .ThenInclude(bg => bg.Genre)
+                .Where(b => b.Status == "approved")
+                .Select(b => new Book
+                {
+                    BookId = b.BookId,
+                    Title = b.Title,
+                    Author = b.Author,
+                    Description = b.Description,
+                    CoverImageUrl = b.CoverImageUrl,
+                    Status = b.Status
+                })
                 .ToListAsync();
         }
 
@@ -31,8 +39,6 @@ namespace BookReviewDotNet.Controllers
         public async Task<ActionResult<Book>> GetBook(int id)
         {
             var book = await _context.Books
-                .Include(b => b.BookGenres)
-                    .ThenInclude(bg => bg.Genre)
                 .FirstOrDefaultAsync(b => b.BookId == id);
 
             if (book == null)

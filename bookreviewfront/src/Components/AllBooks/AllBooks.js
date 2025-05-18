@@ -10,10 +10,13 @@ const AllBooks = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/books');
+                console.log('Fetching books...');
+                const response = await axios.get('http://localhost:5122/api/books');
+                console.log('Response:', response.data);
                 setBooks(response.data);
                 setLoading(false);
             } catch (err) {
+                console.error('Error:', err);
                 setError('Error fetching books');
                 setLoading(false);
             }
@@ -22,12 +25,14 @@ const AllBooks = () => {
         fetchBooks();
     }, []);
 
+    console.log('Current books state:', books);
+
     if (loading) return <div className="loading">Loading...</div>;
     if (error) return <div className="error">{error}</div>;
 
     return (
         <div className="all-books-container">
-            <h1>All Books</h1>
+            <h1></h1>
             <div className="books-grid">
                 {books.map((book) => (
                     <div key={book.bookId} className="book-card">
@@ -42,9 +47,6 @@ const AllBooks = () => {
                             <h2>{book.title}</h2>
                             <p className="author">By {book.author}</p>
                             <p className="description">{book.description}</p>
-                            <div className="book-status">
-                                Status: <span className={book.status}>{book.status}</span>
-                            </div>
                         </div>
                     </div>
                 ))}

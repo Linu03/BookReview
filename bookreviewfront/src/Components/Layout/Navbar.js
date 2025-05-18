@@ -1,10 +1,16 @@
-import React from 'react';
-import { Link } from 'react-router-dom';  // Importă Link din react-router-dom
+import React, { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';  // Importă Link și useLocation
 import { useAuth } from '../Context/AuthContext';
 import './Navbar.css';
 
 const Navbar = () => {
   const { isAdmin } = useAuth();
+  const location = useLocation(); // Folosim useLocation aici
+
+  // Adăugăm un useEffect pentru a loga starea admin când se schimbă ruta
+  useEffect(() => {
+    console.log(`Navbar rendered on path: ${location.pathname}. Is Admin: ${isAdmin()}`);
+  }, [location.pathname, isAdmin]); // Rulează când se schimbă calea sau isAdmin
 
   return (
     <nav className="navbar">
