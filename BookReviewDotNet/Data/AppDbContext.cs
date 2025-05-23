@@ -12,6 +12,8 @@ namespace BookReviewDotNet.Data
 
         public DbSet<UserModel> Users { get; set; }
         public DbSet<Book> Books { get; set; }
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<BookGenre> BookGenres { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,6 +22,19 @@ namespace BookReviewDotNet.Data
             modelBuilder.Entity<UserModel>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+
+            modelBuilder.Entity<BookGenre>()
+                .HasKey(bg => new { bg.BookId, bg.GenreId });
+
+            modelBuilder.Entity<BookGenre>()
+                .HasOne(bg => bg.Book)
+                .WithMany(b => b.BookGenres)
+                .HasForeignKey(bg => bg.BookId);
+
+            modelBuilder.Entity<BookGenre>()
+                .HasOne(bg => bg.Genre)
+                .WithMany()
+                .HasForeignKey(bg => bg.GenreId);
         }
     }
 }

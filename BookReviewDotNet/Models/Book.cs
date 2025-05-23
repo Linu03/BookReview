@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace BookReviewDotNet.Models
 {
@@ -22,6 +23,12 @@ namespace BookReviewDotNet.Models
 
         public string? Status { get; set; }
 
+        [StringLength(100)]
+        public string? Genre { get; set; }
+
         public int? ProposedByUserId { get; set; }
+
+        // Navigation property for the many-to-many relationship (made nullable)
+        public ICollection<BookGenre>? BookGenres { get; set; }
     }
 } 

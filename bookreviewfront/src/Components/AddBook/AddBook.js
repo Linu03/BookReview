@@ -11,9 +11,26 @@ const AddBook = () => {
     const [author, setAuthor] = useState('');
     const [description, setDescription] = useState('');
     const [coverUrl, setCoverUrl] = useState('');
+    const [showThankYou, setShowThankYou] = useState(false);
+
+    useEffect(() => {
+        let timer;
+        if (showThankYou) {
+            timer = setTimeout(() => {
+                setShowThankYou(false);
+            }, 3000);
+        }
+        return () => clearTimeout(timer);
+    }, [showThankYou]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+
+        if (!title || !author || !description || !coverUrl) {
+            alert("Vă rugăm să completați toate câmpurile!");
+            return;
+        }
 
         const book = {
             title,
@@ -23,7 +40,7 @@ const AddBook = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:5000/api/books', {
+            const response = await fetch('http://localhost:5122/api/books', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -36,11 +53,19 @@ const AddBook = () => {
                 setAuthor('');
                 setDescription('');
                 setCoverUrl('');
-                alert("Cartea a fost adăugată cu succes!");
+                setShowThankYou(true);
             } else {
+                setTitle('');
+                setAuthor('');
+                setDescription('');
+                setCoverUrl('');
                 alert("A apărut o eroare la adăugarea cărții.");
             }
         } catch (error) {
+            setTitle('');
+            setAuthor('');
+            setDescription('');
+            setCoverUrl('');
             console.error("Eroare la trimitere:", error);
             alert("Eroare la trimitere.");
         }
@@ -51,6 +76,11 @@ const AddBook = () => {
             <Navbar />
             <div className="addbook-container">
                 <h1>Adaugă o carte nouă</h1>
+                {showThankYou && (
+                    <div className="thank-you-message">
+                        Mulțumim pentru ajutor!
+                    </div>
+                )}
                 <form className="addbook-form" onSubmit={handleSubmit}>
                     <label>
                         Titlu:
