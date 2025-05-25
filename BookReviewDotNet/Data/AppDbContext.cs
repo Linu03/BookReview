@@ -14,6 +14,7 @@ namespace BookReviewDotNet.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<BookGenre> BookGenres { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +36,20 @@ namespace BookReviewDotNet.Data
                 .HasOne(bg => bg.Genre)
                 .WithMany()
                 .HasForeignKey(bg => bg.GenreId);
+
+            // Configure Review relationships
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Book)
+                .WithMany()
+                .HasForeignKey(r => r.BookId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.User)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .HasPrincipalKey(u => u.ID)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

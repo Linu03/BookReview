@@ -12,35 +12,11 @@ const BookDetails = () => {
     const [proposedUserName, setProposedUserName] = useState('Unknown');
     const [showFullDescription, setShowFullDescription] = useState(false);
     const [showReviewForm, setShowReviewForm] = useState(false);
+    const [reviews, setReviews] = useState([]);
     const [newReview, setNewReview] = useState({
         rating: 0,
         comment: ''
     });
-
-    // Hardcoded reviews for demonstration
-    const hardcodedReviews = [
-        {
-            id: 1,
-            reviewerName: "Maria Popescu",
-            rating: 5,
-            comment: "O carte extraordinară! Mi-a captivat atenția de la prima pagină. Personajele sunt foarte bine construite și povestea este captivantă.",
-            date: "2024-03-15"
-        },
-        {
-            id: 2,
-            reviewerName: "Ion Ionescu",
-            rating: 4,
-            comment: "O lectură plăcută, cu momente foarte interesante. Recomand cu plăcere, deși finalul mi s-a părut puțin grăbit.",
-            date: "2024-03-10"
-        },
-        {
-            id: 3,
-            reviewerName: "Ana Dumitrescu",
-            rating: 5,
-            comment: "Una dintre cele mai bune cărți pe care le-am citit anul acesta. Stilul de scriere este fluid și personajele sunt memorabile.",
-            date: "2024-03-05"
-        }
-    ];
 
     useDocumentTitle('Booksy');
 
@@ -63,12 +39,54 @@ const BookDetails = () => {
         setNewReview(prev => ({ ...prev, comment: e.target.value }));
     };
 
-    const handleSubmitReview = () => {
-        // Here you would typically send the review to your backend
-        console.log('New review:', newReview);
-        // Reset form
-        setNewReview({ rating: 0, comment: '' });
-        setShowReviewForm(false);
+    const handleSubmitReview = async () => {
+        console.log('handleSubmitReview called');
+        if (!newReview.rating || !newReview.comment.trim()) {
+            setError('Te rugăm să completezi toate câmpurile obligatorii');
+            console.log('STOP: rating sau comment lipsa');
+            return;
+        }
+
+        const reviewData = {
+            bookId: parseInt(bookId),
+            userId: 1,
+            rating: newReview.rating,
+            comment: newReview.comment.trim()
+        };
+        console.log('Review data to send:', reviewData);
+        console.log('bookId trimis:', bookId);
+
+        try {
+            const response = await axios.post('http://localhost:5122/api/Reviews', reviewData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log('POST /api/Reviews response:', response);
+            if (response.status === 200 || response.status === 201) {
+                setNewReview({ rating: 0, comment: '' });
+                setShowReviewForm(false);
+                fetchReviews(); // Refresh the reviews list
+                alert('Review-ul a fost adăugat cu succes!');
+            }
+        } catch (error) {
+            console.error('Error submitting review:', error);
+            setError('A apărut o eroare la salvarea review-ului. Te rugăm să încerci din nou.');
+        }
+    };
+
+    const fetchReviews = async () => {
+        try {
+            const response = await axios.get(`http://localhost:5122/api/Reviews/book/${bookId}`);
+            console.log('Reviews primite de la backend:', response.data);
+            setReviews(response.data);
+            setTimeout(() => {
+                console.log('Reviews in state:', reviews);
+            }, 100);
+        } catch (error) {
+            console.error('Error fetching reviews:', error);
+            setError('A apărut o eroare la încărcarea review-urilor.');
+        }
     };
 
     useEffect(() => {
@@ -88,6 +106,9 @@ const BookDetails = () => {
                 } else {
                     setProposedUserName('Unknown');
                 }
+
+                // Fetch reviews after getting book details
+                await fetchReviews();
 
             } catch (err) {
                 setError('Error fetching book or user details');
@@ -147,22 +168,24 @@ const BookDetails = () => {
             <div className="reviews-section">
                 <h2>Recenzii</h2>
                 <div className="reviews-list">
-                    {hardcodedReviews.map((review) => (
-                        <div key={review.id} className="review-card">
-                            <div className="review-header">
-                                <span className="reviewer-name">{review.reviewerName}</span>
-                                <span className="review-rating">{renderStars(review.rating)}</span>
-                            </div>
-                            <p className="review-text">{review.comment}</p>
-                            <div className="review-date">
-                                {new Date(review.date).toLocaleDateString('ro-RO')}
-                            </div>
-                        </div>
-                    ))}
+                    {reviews.filter(review => review.bookId === parseInt(bookId)).length === 0 ? (
+                        <p className="no-reviews">Nu există recenzii pentru această carte. Fii primul care adaugă o recenzie!</p>
+                    ) : (
+                        reviews
+                            .filter(review => review.bookId === parseInt(bookId))
+                            .map((review) => (
+                                <div key={review.reviewId} className="review-card">
+                                    <div className="review-header">
+                                        <span className="review-rating">{'★'.repeat(review.rating) + '☆'.repeat(5 - review.rating)}</span>
+                                    </div>
+                                    <p className="review-text">{review.comment}</p>
+                                </div>
+                            ))
+                    )}
                 </div>
             </div>
 
-            {/* Add Review Button - Moved outside reviews section */}
+            {/* Add Review Button */}
             <div className="add-review-container">
                 <button 
                     className="add-review-btn"
@@ -210,6 +233,7 @@ const BookDetails = () => {
                             <button 
                                 className="submit-review-btn"
                                 onClick={handleSubmitReview}
+                                type="button"
                                 disabled={!newReview.rating || !newReview.comment.trim()}
                             >
                                 Trimite Review
