@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './AllBooks.css';
 
 const AllBooks = () => {
+    const navigate = useNavigate();
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -47,6 +49,10 @@ const AllBooks = () => {
 
     console.log('Current books state:', books);
 
+    const handleBookClick = (bookId) => {
+        navigate(`/book/${bookId}`);
+    };
+
     if (loading) return <div className="loading">Loading...</div>;
     if (error) return <div className="error">{error}</div>;
 
@@ -65,7 +71,12 @@ const AllBooks = () => {
             </div>
             <div className="books-grid">
                 {filteredBooks.map((book) => (
-                    <div key={book.bookId} className="book-card">
+                    <div 
+                        key={book.bookId} 
+                        className="book-card"
+                        onClick={() => handleBookClick(book.bookId)}
+                        style={{ cursor: 'pointer' }}
+                    >
                         {book.coverImageUrl && (
                             <img 
                                 src={book.coverImageUrl} 

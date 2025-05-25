@@ -118,25 +118,41 @@ namespace BookReviewDotNet.Controllers
 
             var claims = new[]
             {
-            new Claim(ClaimTypes.Name, user.Name),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role)
-            // putem adauga mai multe
+                new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()),
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role)
+                // putem adauga mai multe
             };
 
             var token = new JwtSecurityToken(
-            issuer: _configuration["Jwt:Issuer"],
-            audience: _configuration["Jwt:Audience"],
-            claims: claims,
-            expires: DateTime.Now.AddHours(1), // 1 ora
-            signingCredentials: signingCredentials
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddHours(1), // 1 ora
+                signingCredentials: signingCredentials
             );
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
             // returnează token-ul JWT
-            return Ok(new { Token = tokenString });
+            return Ok(new { Token = tokenString, id = user.ID });
+        }
 
+        // GET: api/Auth/user/{id}
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<UserModel>> GetUserById(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Return a new UserModel object with only necessary properties
+            // to avoid exposing sensitive information like the password hash.
+            return Ok(new { Name = user.Name });
         }
     }
 }

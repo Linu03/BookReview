@@ -55,10 +55,10 @@ const LoginSignup = () => {
         }
 
         try {
-            const response = await fetch(url, 
+            const response = await fetch(url,
             {
                 method: 'POST',
-                headers: 
+                headers:
                 {
                     'Content-Type': 'application/json',
                 },
@@ -69,22 +69,33 @@ const LoginSignup = () => {
             console.log('Full server response:', JSON.stringify(result, null, 2));
 
             if (response.ok) {
+                // Prioritize getting the user ID directly from the result
+                const userId = result.id;
                 const decodedToken = decodeJwtToken(result.token);
                 console.log('Decoded token:', decodedToken);
 
                 const userData = {
                     token: result.token,
-                    id: decodedToken?.id,
+                    id: userId, // Use the ID directly from the backend result
                     name: decodedToken?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
                     email: decodedToken?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
                     role: decodedToken?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
                 };
 
-                console.log('User data:', userData);
-                login(userData);
-                navigate('/home');
+                console.log('User data before login:', userData); // Log user data
+
+                // Check if user ID is successfully retrieved
+                if (userData.id) {
+                    login(userData);
+                    navigate('/home');
+                } else {
+                    console.error('User ID not found in login response.');
+                    alert('Login failed: User ID not received.');
+                }
+
             } else {
                 console.error('Login/Signup failed:', result.message);
+                alert(result.message || 'Login/Signup failed.');
             }
 
             setName("");
@@ -92,6 +103,7 @@ const LoginSignup = () => {
             setPassword("");
         } catch (error) {
             console.error('Error:', error);
+            alert('An error occurred. Please try again.');
         }
     };
 

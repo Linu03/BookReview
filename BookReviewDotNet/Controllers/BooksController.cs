@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace BookReviewDotNet.Controllers
 {
@@ -37,7 +38,8 @@ namespace BookReviewDotNet.Controllers
                         Description = b.Description,
                         CoverImageUrl = b.CoverImageUrl,
                         Status = b.Status,
-                        Genre = b.Genre
+                        Genre = b.Genre,
+                        ProposedByUserId = b.ProposedByUserId
                     })
                     .ToListAsync();
 
@@ -63,6 +65,17 @@ namespace BookReviewDotNet.Controllers
         public async Task<ActionResult<Book>> GetBook(int id)
         {
             var book = await _context.Books
+                .Select(b => new Book
+                {
+                    BookId = b.BookId,
+                    Title = b.Title,
+                    Author = b.Author,
+                    Description = b.Description,
+                    CoverImageUrl = b.CoverImageUrl,
+                    Status = b.Status,
+                    Genre = b.Genre,
+                    ProposedByUserId = b.ProposedByUserId
+                })
                 .FirstOrDefaultAsync(b => b.BookId == id);
 
             if (book == null)
@@ -75,7 +88,6 @@ namespace BookReviewDotNet.Controllers
 
         // POST: api/Books (Add new pending book)
         [HttpPost]
-        [AllowAnonymous]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
             if (!ModelState.IsValid)
@@ -107,6 +119,15 @@ namespace BookReviewDotNet.Controllers
             {
                 book.Description = "No description provided";
             }
+
+            // Get the ID of the logged-in user
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return Unauthorized("User is not authenticated or user ID is not available.");
+            }
+
+            book.ProposedByUserId = userId;
 
             _context.Books.Add(book);
             await _context.SaveChangesAsync();

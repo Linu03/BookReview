@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../Layout/Navbar';
 import './AddBook.css';
+import { useAuth } from '../Context/AuthContext'; // Import useAuth hook
 
 const AddBook = () => {
     useEffect(() => {
         document.title = "Booksy - Add a Book";
     }, []);
+
+    const { user } = useAuth(); // Use the useAuth hook to get the logged-in user
+    console.log('User object in AddBook:', user); // Add logging here
 
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
@@ -26,6 +30,10 @@ const AddBook = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (!user) {
+            alert("Vă rugăm să vă autentificați pentru a adăuga o carte.");
+            return;
+        }
 
         if (!title || !author || !description || !coverUrl) {
             alert("Vă rugăm să completați toate câmpurile!");
@@ -36,14 +44,17 @@ const AddBook = () => {
             title,
             author,
             description,
-            coverImageUrl: coverUrl
+            coverImageUrl: coverUrl,
+            proposedByUserId: user.id // Use the logged-in user's ID
         };
 
         try {
             const response = await fetch('http://localhost:5122/api/books', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    // Include Authorization header with JWT token if available
+                    'Authorization': user.token ? `Bearer ${user.token}` : '' // Ensure token exists
                 },
                 body: JSON.stringify(book)
             });
@@ -59,7 +70,9 @@ const AddBook = () => {
                 setAuthor('');
                 setDescription('');
                 setCoverUrl('');
-                alert("A apărut o eroare la adăugarea cărții.");
+                const errorText = await response.text();
+                console.error("Error adding book:", response.status, errorText);
+                alert(`A apărut o eroare la adăugarea cărții: ${response.statusText}. Detalii: ${errorText}`);
             }
         } catch (error) {
             setTitle('');

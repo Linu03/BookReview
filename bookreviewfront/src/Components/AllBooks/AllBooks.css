@@ -3,6 +3,8 @@
     max-width: 1200px;
     margin: 0 auto;
     margin-top: 2rem;
+    height: calc(100vh - 4rem);
+    overflow-y: auto;
 }
 
 .all-books-container h1 {
@@ -15,6 +17,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
+    padding-bottom: 2rem;
 }
 
 .book-card {
@@ -24,10 +27,12 @@
     overflow: hidden;
     transition: transform 0.2s;
     display: flex;
+    border: 1px solid #d0d0d0;
 }
 
 .book-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .book-cover {
@@ -44,42 +49,35 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .book-info h2 {
     margin: 0 0 0.5rem 0;
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     color: #333;
 }
 
 .author {
-    color: #666;
+    color: #555;
     font-style: italic;
     margin-bottom: 0.5rem;
+    font-size: 0.95rem;
 }
 
 .genre {
-    font-size: 0.85rem; /* Slightly smaller font size */
-    color: #555; /* Similar color to author, maybe slightly different */
-    margin-bottom: 0.5rem; /* Add some space below genre */
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
 }
 
 .description {
-    /* color: #444; */
-    /* font-size: 0.9rem; */
-    /* margin-bottom: 1rem; */
-    display: none; /* Hide description */
-    /* -webkit-line-clamp: 3; */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    /* text-align: left; */
+    display: none;
 }
 
 .book-status {
-    display: none; /* Hide book status */
-    /* font-size: 0.9rem; */
-    /* color: #666; */
+    display: none;
 }
 
 .book-status span {
@@ -108,6 +106,17 @@
     font-size: 1.2rem;
 }
 
+@keyframes slideInFromTop {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 .genre-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -117,6 +126,9 @@
     padding: 1rem;
     background-color: #f8f9fa;
     border-radius: 8px;
+    border: 1px solid #d0d0d0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    animation: slideInFromTop 1s ease-out;
 }
 
 .genre-button {
@@ -130,17 +142,19 @@
     font-weight: 500;
     transition: all 0.3s ease;
     min-width: 120px;
+    text-transform: capitalize;
 }
 
 .genre-button:hover {
     background-color: #007bff;
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
 
 .genre-button.active {
     background-color: #007bff;
     color: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+    border-color: #007bff;
 } 

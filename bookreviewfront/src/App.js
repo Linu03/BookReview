@@ -7,6 +7,7 @@ import AddBook from './Components/AddBook/AddBook';
 import { AuthProvider } from './Components/Context/AuthContext';
 import AcceptBook from './Components/AcceptBooks/AcceptBooks';
 import AllBooks from './Components/AllBooks/AllBooks';
+import BookDetails from './Components/BookDetails/BookDetails';
 import Navbar from './Components/Layout/Navbar';
 import ProtectedRoute from './Components/Layout/ProtectedRoute';
 
@@ -35,6 +36,7 @@ function AppContent() {
         <Route path="/addBook" element={<ProtectedRoute element={AddBook} />} /> 
         <Route path='/acceptBook' element={<ProtectedRoute element={AcceptBook} />} />
         <Route path='/books' element={<ProtectedRoute element={AllBooks} />} />
+        <Route path='/book/:bookId' element={<ProtectedRoute element={BookDetails} />} />
       </Routes>
     </>
   );
