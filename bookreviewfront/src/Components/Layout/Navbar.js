@@ -17,7 +17,7 @@ const Navbar = () => {
       <div className="navdiv">
         {/* Logo */}
         <div className="logo">
-          <a href="#">Booksy</a>
+          <Link to="/home">Booksy</Link>
         </div>
 
         {/* Meniul de navigare */}
