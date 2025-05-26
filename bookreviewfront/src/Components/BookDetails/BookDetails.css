@@ -616,4 +616,25 @@
     .cancel-review-btn {
         width: 100%;
     }
+}
+
+.delete-review-btn {
+    background-color: transparent;
+    color: #e74c3c;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+}
+
+.delete-review-btn:hover {
+    background-color: #e74c3c;
+    color: white;
 } 
