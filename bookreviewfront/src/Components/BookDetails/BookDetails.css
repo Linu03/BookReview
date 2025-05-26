@@ -637,4 +637,21 @@
 .delete-review-btn:hover {
     background-color: #e74c3c;
     color: white;
+}
+
+.toggle-reviews-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-reviews-btn:hover {
+    background-color: #357abd;
 } 

@@ -13,6 +13,7 @@ const BookDetails = () => {
     const [showFullDescription, setShowFullDescription] = useState(false);
     const [showReviewForm, setShowReviewForm] = useState(false);
     const [reviews, setReviews] = useState([]);
+    const [showAllReviews, setShowAllReviews] = useState(false);
     const [newReview, setNewReview] = useState({
         rating: 0,
         comment: ''
@@ -171,16 +172,27 @@ const BookDetails = () => {
                     {reviews.filter(review => review.bookId === parseInt(bookId)).length === 0 ? (
                         <p className="no-reviews">Nu există recenzii pentru această carte. Fii primul care adaugă o recenzie!</p>
                     ) : (
-                        reviews
-                            .filter(review => review.bookId === parseInt(bookId))
-                            .map((review) => (
-                                <div key={review.reviewId} className="review-card">
-                                    <div className="review-header">
-                                        <span className="review-rating">{'★'.repeat(review.rating) + '☆'.repeat(5 - review.rating)}</span>
+                        <>
+                            {reviews
+                                .filter(review => review.bookId === parseInt(bookId))
+                                .slice(0, showAllReviews ? undefined : 5)
+                                .map((review) => (
+                                    <div key={review.reviewId} className="review-card">
+                                        <div className="review-header">
+                                            <span className="review-rating">{'★'.repeat(review.rating) + '☆'.repeat(5 - review.rating)}</span>
+                                        </div>
+                                        <p className="review-text">{review.comment}</p>
                                     </div>
-                                    <p className="review-text">{review.comment}</p>
-                                </div>
-                            ))
+                                ))}
+                            {reviews.filter(review => review.bookId === parseInt(bookId)).length > 5 && (
+                                <button 
+                                    className="toggle-reviews-btn"
+                                    onClick={() => setShowAllReviews(!showAllReviews)}
+                                >
+                                    {showAllReviews ? 'Arată mai puține review-uri' : 'Arată toate review-urile'}
+                                </button>
+                            )}
+                        </>
                     )}
                 </div>
             </div>
