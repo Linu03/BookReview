@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
 import { useAuth } from '../Context/AuthContext';
 import './BookDetails.css';
 
 const BookDetails = () => {
     const { bookId } = useParams();
+    const navigate = useNavigate();
     const { isAdmin } = useAuth();
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -107,6 +108,21 @@ const BookDetails = () => {
         }
     };
 
+    const handleDeleteBook = async () => {
+        if (!window.confirm('Sigur doriți să ștergeți această carte? Această acțiune nu poate fi anulată.')) {
+            return;
+        }
+
+        try {
+            await axios.delete(`http://localhost:5122/api/Books/${bookId}`);
+            // După ștergere, redirecționăm utilizatorul către pagina cu toate cărțile
+            navigate('/books');
+        } catch (error) {
+            console.error('Error deleting book:', error);
+            setError('A apărut o eroare la ștergerea cărții.');
+        }
+    };
+
     useEffect(() => {
         const fetchBookDetails = async () => {
             try {
@@ -155,7 +171,18 @@ const BookDetails = () => {
                 </div>
                 <div className="book-info-section">
                     <div className="book-title-box">
-                        <h1>{book.title}</h1>
+                        <div className="title-header">
+                            <h1>{book.title}</h1>
+                            {isAdmin() && (
+                                <button 
+                                    className="delete-book-btn"
+                                    onClick={handleDeleteBook}
+                                    title="Șterge carte"
+                                >
+                                    ×
+                                </button>
+                            )}
+                        </div>
                     </div>
                     <div className="book-author-box">
                         <p className="author">By {book.author}</p>

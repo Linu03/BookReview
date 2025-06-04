@@ -648,4 +648,38 @@
 
 .toggle-reviews-btn:hover {
     background-color: #357abd;
+}
+
+.title-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.title-header h1 {
+    margin: 0;
+    flex: 1;
+}
+
+.delete-book-btn {
+    background: none;
+    border: none;
+    color: #ff4444;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1;
+    transition: all 0.2s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.delete-book-btn:hover {
+    color: #cc0000;
+    background-color: rgba(255, 68, 68, 0.1);
 } 
