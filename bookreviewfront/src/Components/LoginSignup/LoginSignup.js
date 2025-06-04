@@ -45,6 +45,11 @@ const LoginSignup = () => {
     // trimitere date in backend
     const handleSubmit = async () => {
         console.log("Submit button clicked");
+        // Clear form data immediately
+        setName("");
+        setEmail("");
+        setPassword("");
+
         const url = action === "Login"
             ? 'http://localhost:5122/api/auth/login'
             : 'http://localhost:5122/api/auth/register';
@@ -98,9 +103,6 @@ const LoginSignup = () => {
                 alert(result.message || 'Login/Signup failed.');
             }
 
-            setName("");
-            setEmail("");
-            setPassword("");
         } catch (error) {
             console.error('Error:', error);
             alert('An error occurred. Please try again.');

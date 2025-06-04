@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import { useAuth } from '../Context/AuthContext';
 import './BookDetails.css';
 
 const BookDetails = () => {
     const { bookId } = useParams();
+    const { isAdmin } = useAuth();
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -87,6 +89,21 @@ const BookDetails = () => {
         } catch (error) {
             console.error('Error fetching reviews:', error);
             setError('A apărut o eroare la încărcarea review-urilor.');
+        }
+    };
+
+    const handleDeleteReview = async (reviewId) => {
+        if (!window.confirm('Sigur doriți să ștergeți acest review?')) {
+            return;
+        }
+
+        try {
+            await axios.delete(`http://localhost:5122/api/Reviews/${reviewId}`);
+            // Actualizăm lista de review-uri după ștergere
+            fetchReviews();
+        } catch (error) {
+            console.error('Error deleting review:', error);
+            setError('A apărut o eroare la ștergerea review-ului.');
         }
     };
 
@@ -180,6 +197,15 @@ const BookDetails = () => {
                                     <div key={review.reviewId} className="review-card">
                                         <div className="review-header">
                                             <span className="review-rating">{'★'.repeat(review.rating) + '☆'.repeat(5 - review.rating)}</span>
+                                            {isAdmin() && (
+                                                <button 
+                                                    className="delete-review-btn"
+                                                    onClick={() => handleDeleteReview(review.reviewId)}
+                                                    title="Șterge review"
+                                                >
+                                                    ×
+                                                </button>
+                                            )}
                                         </div>
                                         <p className="review-text">{review.comment}</p>
                                     </div>

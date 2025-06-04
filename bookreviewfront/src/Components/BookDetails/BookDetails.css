@@ -376,7 +376,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 10px;
 }
 
 .reviewer-name {
@@ -619,24 +619,18 @@
 }
 
 .delete-review-btn {
-    background-color: transparent;
-    color: #e74c3c;
+    background: none;
     border: none;
-    font-size: 20px;
+    color: #ff4444;
+    font-size: 24px;
     cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 50%;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
+    padding: 0 5px;
+    line-height: 1;
+    transition: color 0.2s ease;
 }
 
 .delete-review-btn:hover {
-    background-color: #e74c3c;
-    color: white;
+    color: #cc0000;
 }
 
 .toggle-reviews-btn {
